@@ -69,8 +69,11 @@
             //shake event callback
             function shakeEventDidOccur () {
                 //put your own code here etc.
+                var media = new Media("shaker.mp3", null, mediaError);
+                media.play();
                 alert('Shake!');
             }
+            
         </script>
     </body>
 </html>
