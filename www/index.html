@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-    FoodShaker :: Cross-Platform 
+    FoodShaker :: Cross-Platform Random Food Generator
     A Harvard University's CS50 Final Project
     by Gábor Hargitai
 -->
@@ -18,10 +18,19 @@
     </head>
     <body>
         <ons-navigator title="Navigator" var="myNavigator">
-          <ons-page>
-            <ons-toolbar>
-              <div class="center">Simple Navigation</div>
-            </ons-toolbar>
+            <ons-page>
+            
+                <ons-toolbar modifier="transparent">
+                  <div class="center"></div>
+                </ons-toolbar>
+
+                <div class="card">
+                    <div class="card-name">Onsen Sushi</div>
+                    <div class="card-desc">Traditional Japanese Sushi<br>Open until 10:30pm</div>
+                </div>
+              
+            <br>
+            
             <div style="text-align: center">
               <br>
               <ons-button modifier="light" onclick="myNavigator.pushPage('page1.html', { animation : 'slide' } )">
@@ -71,13 +80,17 @@
             window.addEventListener('shake', shakeEventDidOccur, false);
             
             //shake event callback
-            function shakeEventDidOccur () {
+            function shakeEventDidOccur() {
                 //put your own code here etc.
                 console.log("Shake event!");
                 
                 var fullPath = getPhoneGapPath() + 'shaker.mp3';
                 
-                console.log('Full path to this call is: '+fullPath);
+                if (device.platform == 'Android') {
+                    fullPath = '/android_asset/www/' + 'shaker.mp3';
+                }
+                
+                console.log('Full path to audio: '+fullPath);
                 
                 var myMedia = new Media(fullPath,
                     // success callback
@@ -106,21 +119,5 @@
             };
 
         </script>
-        <script>
-        function playAudio(src) {
-            if (device.platform == 'Android') {
-                src = '/android_asset/www/' + src;
-            }
-            var media = new Media(src, success, error_error);
-            media.play();
-        }
-        function success() {
-            console.log('Playing your audio, fam');
-        }
-        function error_error(e) {
-            console.log('great error');
-            console.log(e.message);
-        }
-    </script>
     </body>
 </html>
