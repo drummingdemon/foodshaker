@@ -24,9 +24,16 @@
             </ons-toolbar>
             <div style="text-align: center">
               <br>
+                <a href="#" class="btn large" onclick="playAudio('http://audio.ibeat.org/content/p1rj1s/p1rj1s_-_rockGuitar.mp3');">Play Audio</a>
+        <a href="#" class="btn large" onclick="pauseAudio();">Pause Playing Audio</a>
+        <a href="#" class="btn large" onclick="stopAudio();">Stop Playing Audio</a>
+        <p id="audio_position"></p>
+                <br>
               <ons-button modifier="light" onclick="myNavigator.pushPage('page1.html', { animation : 'slide' } )">
                 Push Page
               </ons-button>
+                    <button onclick="playAudio('shaker.mp3')">Play Some Audio</button>
+
             </div>
           </ons-page>
         </ons-navigator>
@@ -45,6 +52,7 @@
               <ons-button modifier="light" onclick="myNavigator.popPage()">
                 Pop Page
               </ons-button>
+                
             </div>
           </ons-page>
         </ons-template>
@@ -62,18 +70,64 @@
             var myShakeEvent = new Shake({
                 threshold: 15
             });
+            
             // start listening to device motion
             myShakeEvent.start();
+            
             // register a shake event
             window.addEventListener('shake', shakeEventDidOccur, false);
+            
             //shake event callback
             function shakeEventDidOccur () {
                 //put your own code here etc.
-                var media = new Media("shaker.mp3", null, mediaError);
-                media.play();
-                alert('Shake!');
+                console.log("Shake event!");
+                
+                var fullPath = getPhoneGapPath() + 'shaker.mp3';
+                
+                console.log('Full path to this call is: '+fullPath);
+                
+                var myMedia = new Media(fullPath,
+                    // success callback
+                    function () {
+                        console.log("playAudio():Audio Success");
+                    },
+                    // error callback
+                    function (err) {
+                        console.log("playAudio():Audio Error: " + err);
+                    }
+                );
+                myMedia.setVolume('1.0');
+                myMedia.play();
+            }
+
+            function mediaError(e) {
+                alert(JSON.stringify(e));
             }
             
+            function getPhoneGapPath() {
+                var path = window.location.pathname;
+                path = path.substr( path, path.length - 10 );
+                //return 'cdvfile://' + path;
+                return path;
+
+            };
+
         </script>
+        <script>
+        function playAudio(src) {
+            if (device.platform == 'Android') {
+                src = '/android_asset/www/' + src;
+            }
+            var media = new Media(src, success, error_error);
+            media.play();
+        }
+        function success() {
+            console.log('Playing your audio, fam');
+        }
+        function error_error(e) {
+            console.log('great error');
+            console.log(e.message);
+        }
+    </script>
     </body>
 </html>
