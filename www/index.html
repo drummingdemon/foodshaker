@@ -38,6 +38,14 @@
                     $scope.audToggle = true;
                 }
                 
+                if (globalShake) {
+                    $scope.shakerToggle = true;
+                }
+                
+                if (onlineMode) {
+                    $scope.onlineToggle = true;
+                }
+                
                 $scope.check = function(){
                     if ($scope.audToggle) {
                         console.log("ENABLED!");
@@ -45,6 +53,26 @@
                     } else {
                         console.log("DISABLED!");
                         audioEnabled = false;
+                    }
+                }
+                
+                $scope.toggleShake = function() {
+                    if ($scope.shakerToggle) {
+                        console.log("Global Shake activated");
+                        globalShake = true;
+                    } else {
+                        console.log("Global Shake deactivated");
+                        globalShake = false;
+                    }
+                }
+                
+                $scope.toggleOnline = function() {
+                    if ($scope.onlineToggle) {
+                        console.log("Online Mode activated");
+                        onlineMode = true;
+                    } else {
+                        console.log("Global Shake deactivated");
+                        onlineMode = false;
                     }
                 }
             });
@@ -118,8 +146,9 @@
                 <ons-toolbar>
                     <div class="center">Fridge</div>
                 </ons-toolbar>    
-                    <script type="text/javascript">console.log('Fridge chosen!');</script>
-                    <div class="shake-text">FRIDGE!</div>
+                
+                <br>
+                <div class="shake-text">Currently, it's empty</div>
                 
             </ons-page>
         </ons-template>
@@ -130,14 +159,24 @@
                 <ons-toolbar>
                     <div class="center">Settings</div>
                 </ons-toolbar>
-
-                <br/>
                 <br/>
                 <div class="settings-header">Audio</div>
                 <ons-list modifier="inset" class="settings-list">
                     <ons-list-item>
                         Enable Shaker Sound
                       <ons-switch modifier="list-item" var='audioSwitch' ng-model='audToggle' ng-change='check()'></ons-switch>
+                    </ons-list-item>
+                </ons-list>
+                <br/>
+                <div class="settings-header">General</div>
+                <ons-list modifier="inset" class="settings-list">
+                    <ons-list-item>
+                        Enable Shaker From Any Tab
+                      <ons-switch modifier="list-item" var='audioSwitch' ng-model='shakerToggle' ng-change='toggleShake()'></ons-switch>
+                    </ons-list-item>
+                    <ons-list-item>
+                        Online Database
+                      <ons-switch modifier="list-item" var='onlineSwitch' ng-model='onlineToggle' ng-change='toggleOnline()'></ons-switch>
                     </ons-list-item>
                 </ons-list>
             </ons-page>

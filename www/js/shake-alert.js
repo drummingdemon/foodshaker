@@ -7,6 +7,8 @@ var myShakeEvent = new Shake({
 myShakeEvent.start();
 
 var audioEnabled = true;
+var globalShake = false;
+var onlineMode = true;
 
 // register a shake event
 window.addEventListener('shake', shakeEventDidOccur, false);
