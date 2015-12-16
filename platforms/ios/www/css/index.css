@@ -113,3 +113,22 @@ h1 {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+
+.card {
+  background-color: white;
+  background-image: url(../img/food_fly.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  height: 250px;
+}
+
+.shake-icon {
+	position:relative;
+	left:30%;
+	margin-top: 30px;
+    height: 200px;
+    width: 200px;
+    background-image: url(../img/shake.png);
+    background-repeat: no-repeat;
+}

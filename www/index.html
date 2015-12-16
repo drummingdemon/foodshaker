@@ -18,22 +18,22 @@
     </head>
     <body>
         <ons-navigator title="Navigator" var="myNavigator">
-            <ons-page>
-            
-                <ons-toolbar modifier="transparent">
-                  <div class="center">Foodshaker</div>
-                </ons-toolbar>
+            <ons-page>        
+                <div class="backdrop">
+        
+                    <div class="shake-icon"></div>
 
-                <div class="card"></div>
-              
-            <br>
-            
-            <div style="text-align: center">
-              <br>
-              <ons-button modifier="light" onclick="myNavigator.pushPage('page1.html', { animation : 'slide' } )">
-                Push Page
-              </ons-button>
-            </div>
+                    <div class="shake-text">
+                        Shake Me!
+                    </div>
+
+                    <div style="text-align: center">
+                      <br>
+                      <ons-button class="button-fridge" modifier="light" onclick="myNavigator.pushPage('page1.html', { animation : 'slide' } )">
+                        What's in my fridge?
+                      </ons-button>
+                    </div>
+                </div>
           </ons-page>
         </ons-navigator>
 

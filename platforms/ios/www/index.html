@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-    FoodShaker :: Cross-Platform 
+    FoodShaker :: Cross-Platform Random Food Generator
     A Harvard University's CS50 Final Project
     by Gábor Hargitai
 -->
@@ -18,10 +18,24 @@
     </head>
     <body>
         <ons-navigator title="Navigator" var="myNavigator">
-          <ons-page>
-            <ons-toolbar>
-              <div class="center">Simple Navigation</div>
-            </ons-toolbar>
+            <ons-page>
+            
+                <ons-toolbar modifier="transparent">
+                  <div class="center"></div>
+                </ons-toolbar>
+                
+                
+                
+                <div class="card"></div>
+                
+                <div class="shake-icon"></div>
+
+                <div style="text-align: center; font-weight: 200;">
+                    <br>
+                    Shake your Device for a Recipe!
+                    <br>
+                </div>
+                
             <div style="text-align: center">
               <br>
               <ons-button modifier="light" onclick="myNavigator.pushPage('page1.html', { animation : 'slide' } )">
@@ -43,8 +57,9 @@
             <div style="text-align: center">
               <br />
               <ons-button modifier="light" onclick="myNavigator.popPage()">
-                Pop Page
+                Go Back!
               </ons-button>
+                
             </div>
           </ons-page>
         </ons-template>
@@ -70,11 +85,30 @@
             window.addEventListener('shake', shakeEventDidOccur, false);
             
             //shake event callback
-            function shakeEventDidOccur () {
+            function shakeEventDidOccur() {
                 //put your own code here etc.
-                alert('Shake!');
-                var media = new Media(getPhoneGapPath() + 'shaker.wav', null, mediaError);
-                media.play();
+                console.log("Shake event!");
+                
+                var fullPath = getPhoneGapPath() + 'shaker.mp3';
+                
+                if (device.platform == 'Android') {
+                    fullPath = '/android_asset/www/' + 'shaker.mp3';
+                }
+                
+                console.log('Full path to audio: '+fullPath);
+                
+                var myMedia = new Media(fullPath,
+                    // success callback
+                    function () {
+                        console.log("playAudio():Audio Success");
+                    },
+                    // error callback
+                    function (err) {
+                        console.log("playAudio():Audio Error: " + err);
+                    }
+                );
+                myMedia.setVolume('1.0');
+                myMedia.play();
             }
 
             function mediaError(e) {
@@ -84,7 +118,8 @@
             function getPhoneGapPath() {
                 var path = window.location.pathname;
                 path = path.substr( path, path.length - 10 );
-                return 'file://' + path;
+                //return 'cdvfile://' + path;
+                return path;
 
             };
 
