@@ -142,3 +142,12 @@ h1 {
 .settings-list {
   margin-top: 10px;
 }
+
+.range-list {
+  text-align: center;
+}
+
+.range-wrapper .range {
+  margin-top: 7px;
+  width: 100%;
+}

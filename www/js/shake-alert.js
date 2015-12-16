@@ -9,6 +9,7 @@ myShakeEvent.start();
 var audioEnabled = true;
 var globalShake = false;
 var onlineMode = true;
+var cookingTime = 30;
 
 // register a shake event
 window.addEventListener('shake', shakeEventDidOccur, false);

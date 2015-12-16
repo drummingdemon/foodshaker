@@ -33,6 +33,7 @@
             
             .controller('MyController', function($scope, $timeout) {
                 $scope.items = [{}, {}, {}, {}];
+                $scope.timeToCook = cookingTime;
                 
                 if (audioEnabled) {
                     $scope.audToggle = true;
@@ -74,6 +75,10 @@
                         console.log("Global Shake deactivated");
                         onlineMode = false;
                     }
+                }
+                
+                $scope.setCookingTime = function() {
+                    cookingTime = $scope.timeToCook
                 }
             });
             
@@ -177,6 +182,18 @@
                     <ons-list-item>
                         Online Database
                       <ons-switch modifier="list-item" var='onlineSwitch' ng-model='onlineToggle' ng-change='toggleOnline()'></ons-switch>
+                    </ons-list-item>
+                </ons-list>
+                <br/>
+                <div class="settings-header">Time Available for Cooking</div>
+                <ons-list class="range-list">
+                    <ons-list-item>
+                    <ons-row>
+                        <ons-col class="range-wrapper">
+                             {{timeToCook}} minutes<br>
+                             <input type="range" value="30" class="range" ng-model="timeToCook" min=5 max=60 ng-change="setCookingTime()">
+                        </ons-col>
+                    </ons-row>
                     </ons-list-item>
                 </ons-list>
             </ons-page>
