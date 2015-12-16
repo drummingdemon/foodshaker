@@ -106,8 +106,8 @@ h1 {
 
 .shake-icon {
 	position:absolute;
-	left:27%;
-    top: 32%;
+	left:23%;
+    top: 30%;
 	margin-top: 0px;
     height: 200px;
     width: 200px;
@@ -120,7 +120,7 @@ h1 {
     text-align: center;
     font-weight: 600;
     top: 60%;
-    left: 4%;
+    left: 0%;
 }
 
 .button-fridge {
@@ -129,4 +129,16 @@ h1 {
     font-weight: 600;
     top: 60%;
     left: 4%;
+}
+
+.settings-header {
+  font-weight: 500;
+  font-size: 14px;
+  opacity: 0.4;
+  padding: 10px 0 0px 10px;
+  margin-bottom: 4px;
+}
+
+.settings-list {
+  margin-top: 10px;
 }
