@@ -39,10 +39,6 @@
                     $scope.audToggle = true;
                 }
                 
-                if (globalShake) {
-                    $scope.shakerToggle = true;
-                }
-                
                 if (onlineMode) {
                     $scope.onlineToggle = true;
                 }
@@ -54,16 +50,6 @@
                     } else {
                         console.log("DISABLED!");
                         audioEnabled = false;
-                    }
-                }
-                
-                $scope.toggleShake = function() {
-                    if ($scope.shakerToggle) {
-                        console.log("Global Shake activated");
-                        globalShake = true;
-                    } else {
-                        console.log("Global Shake deactivated");
-                        globalShake = false;
                     }
                 }
                 
@@ -84,18 +70,23 @@
             
             ons.ready(function(){ 
              tabbar.on('postchange', function(event) {
-
+                
+                if (event.index === 0) {
+                    shakeEnabled = true;
+                    console.log("shaker opened");
+                }
+                 
                 // Only with the tab we want, we can use the index or the name
                 if (event.index === 1) {
-
+                    shakeEnabled = false;
                     console.log("fridge opened");
 
                     // Delete this listener so it's only triggered the first time
                     //myTabbar.off('postchange');
                 }
-                else if (event.index === 2) {
-                     
-                    console.log('settings opened');
+                if (event.index === 2) {
+                    shakeEnabled = false;
+                    console.log("settings opened");
 
                 }
 
@@ -176,10 +167,6 @@
                 <div class="settings-header">General</div>
                 <ons-list modifier="inset" class="settings-list">
                     <ons-list-item>
-                        Enable Shaker From Any Tab
-                      <ons-switch modifier="list-item" var='audioSwitch' ng-model='shakerToggle' ng-change='toggleShake()'></ons-switch>
-                    </ons-list-item>
-                    <ons-list-item>
                         Online Database
                       <ons-switch modifier="list-item" var='onlineSwitch' ng-model='onlineToggle' ng-change='toggleOnline()'></ons-switch>
                     </ons-list-item>
@@ -190,7 +177,7 @@
                     <ons-list-item>
                     <ons-row>
                         <ons-col class="range-wrapper">
-                             {{timeToCook}} minutes<br>
+                             <center>{{timeToCook}} minutes</center>
                              <input type="range" value="30" class="range" ng-model="timeToCook" min=5 max=60 ng-change="setCookingTime()">
                         </ons-col>
                     </ons-row>
