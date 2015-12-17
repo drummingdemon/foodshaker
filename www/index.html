@@ -15,61 +15,18 @@
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" href="css/onsenui.css">
         <link rel="stylesheet" href="css/onsen-css-components.css">
-        <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="js/angular/angular.js"></script>
         <script type="text/javascript" src="js/onsenui.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/shake.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
+        <script src="js/controllers.js"></script>
+
         <script >
-            // initialize the platform
-            //app.initialize();
-            ons.bootstrap()
-            
-            .controller('modalController', function($scope) {
-                $scope.dismiss = function() {
-                    modal.hide();
-                }
-            })
-            
-            .controller('MyController', function($scope, $timeout) {
-                $scope.items = [{}, {}, {}, {}];
-                $scope.timeToCook = cookingTime;
+            ons.ready(function(){
                 
-                if (audioEnabled) {
-                    $scope.audToggle = true;
-                }
-                
-                if (onlineMode) {
-                    $scope.onlineToggle = true;
-                }
-                
-                $scope.check = function(){
-                    if ($scope.audToggle) {
-                        console.log("ENABLED!");
-                        audioEnabled = true;
-                    } else {
-                        console.log("DISABLED!");
-                        audioEnabled = false;
-                    }
-                }
-                
-                $scope.toggleOnline = function() {
-                    if ($scope.onlineToggle) {
-                        console.log("Online Mode activated");
-                        onlineMode = true;
-                    } else {
-                        console.log("Global Shake deactivated");
-                        onlineMode = false;
-                    }
-                }
-                
-                $scope.setCookingTime = function() {
-                    cookingTime = $scope.timeToCook
-                }
-            });
-            
-            ons.ready(function(){ 
-             tabbar.on('postchange', function(event) {
+                tabbar.on('postchange', function(event) {
                 
                 if (event.index === 0) {
                     shakeEnabled = true;
@@ -87,7 +44,6 @@
                 if (event.index === 2) {
                     shakeEnabled = false;
                     console.log("settings opened");
-
                 }
 
                 });
@@ -138,18 +94,17 @@
         </ons-modal>
         
         <ons-template id="fridge">
-            <ons-page id="fridge-page">
+            <ons-page>
                 <ons-toolbar>
                     <div class="center">Fridge</div>
                 </ons-toolbar>    
                 
                 <br>
                 <div class="shake-text">Currently, it's empty</div>
-                
+                <code ng-bind-html="messages"></code>
             </ons-page>
         </ons-template>
         
-
         <ons-template id="settings">
             <ons-page ng-controller="MyController">   
                 <ons-toolbar>
@@ -185,8 +140,6 @@
                 </ons-list>
             </ons-page>
         </ons-template>
-        
-        
 
     </body>
 </html>
