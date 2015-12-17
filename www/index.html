@@ -21,6 +21,7 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/shake.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
+        <script type="text/javascript" src="js/SQLitePlugin.js"></script>
         <script src="js/controllers.js"></script>
 
         <script >
@@ -48,8 +49,52 @@
 
                 });
             });
-            
         </script>
+        <script type="text/javascript" charset="utf-8">
+
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        function onDeviceReady() {
+     
+            console.log('Begin SQL Test');
+  var db = window.sqlitePlugin.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+            console.log('database opened');  
+            db.transaction(function(tx) {
+                console.log('starting transaction');
+            tx.executeSql('DROP TABLE IF EXISTS test_table');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS test_table (id integer primary key, data text, data_num integer)');
+
+            // demonstrate PRAGMA:
+            db.executeSql("pragma table_info (test_table);", [], function(res) {
+              console.log("PRAGMA res: " + JSON.stringify(res));
+            });
+
+            tx.executeSql("INSERT INTO test_table (data, data_num) VALUES (?,?)", ["test", 100], function(tx, res) {
+              console.log("insertId: " + res.insertId + " -- probably 1");
+              console.log("rowsAffected: " + res.rowsAffected + " -- should be 1");
+
+              db.transaction(function(tx) {
+                tx.executeSql("select count(id) as cnt from test_table;", [], function(tx, res) {
+                  console.log("res.rows.length: " + res.rows.length + " -- should be 1");
+                  console.log("res.rows.item(0).cnt: " + res.rows.item(0).cnt + " -- should be 1");
+                });
+              });
+
+            }, function(e) {
+              console.log("ERROR: " + e.message);
+            });
+          });
+
+        }
+
+        </script>
+        
+        
+        
+        
+        
+        
+        
         <!-- // the script that handles the shake-motion detection !-->
         <script type="text/javascript" src="js/shake-alert.js"></script>
         <title>FoodShaker</title>
