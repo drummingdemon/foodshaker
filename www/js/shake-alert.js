@@ -7,7 +7,7 @@ var myShakeEvent = new Shake({
 myShakeEvent.start();
 
 var audioEnabled = true;
-var shakeEnabled = false;
+var shakeEnabled = true;
 var onlineMode = true;
 var cookingTime = 30;
 
