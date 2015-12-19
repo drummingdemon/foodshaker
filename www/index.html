@@ -15,6 +15,7 @@
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" href="css/onsenui.css">
         <link rel="stylesheet" href="css/onsen-css-components.css">
+        <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="js/angular/angular.js"></script>
         <script type="text/javascript" src="js/onsenui.js"></script>
@@ -38,6 +39,61 @@
                 if (event.index === 1) {
                     shakeEnabled = false;
                     console.log("fridge opened");
+                    
+                    if (!jQuery) {
+                         alert("jQuery is not loaded");
+                    }
+                    else {
+                        console.log("jQuery found!");
+                    }
+                    
+                console.log("Beginning AJAX call");
+                var output = $('#output');
+                var warning = $('#warning');
+   
+                  $.ajax({
+                      url: 'http://pingvinfeszek.hu/cs501.php',
+                      dataType: 'jsonp',
+                      jsonp: 'jsoncallback',
+                      timeout: 2000,
+                      success: function(data, status){
+
+                          $.each(data, function(i,item){
+                              var response = 
+                              '<li class="list__item list__item--tappable">' +
+                                '<label class="checkbox checkbox--noborder checkbox--list-item">' +
+                                  '<input type="checkbox">' +
+                                  '<div class="checkbox__checkmark checkbox--noborder checkbox--list-item__checkmark"></div>' +
+                                    item.name +
+                                '</label>' +
+                              '</li>';
+                              output.append(response);
+                          });
+                      },
+
+                      error: function(){
+                          warning.text('No Internet! Using local data...');
+                          var localJSONPath = getPhoneGapPath();
+                          var readData;
+                          $.getJSON(localJSONPath + "data.json", function(data)
+                            {
+                                $.each(data, function(j,stuff){
+                                      var items = 
+                                        '<li class="list__item list__item--tappable">' +
+                                          '<label class="checkbox checkbox--noborder checkbox--list-item">' +
+                                            '<input type="checkbox">' +
+                                            '<div class="checkbox__checkmark checkbox--noborder checkbox--list-item__checkmark"></div>' +
+                                              stuff.name +
+                                          '</label>' +
+                                        '</li>';
+                                      output.append(items);
+                                  });
+                              
+                                console.log(data);
+                            });
+                
+                      }
+                    });
 
                     // Delete this listener so it's only triggered the first time
                     //myTabbar.off('postchange');
@@ -50,51 +106,8 @@
                 });
             });
         </script>
-        <script type="text/javascript" charset="utf-8">
 
-        document.addEventListener("deviceready", onDeviceReady, false);
-
-        function onDeviceReady() {
-     
-            console.log('Begin SQL Test');
-  var db = window.sqlitePlugin.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
-            console.log('database opened');  
-            db.transaction(function(tx) {
-                console.log('starting transaction');
-            tx.executeSql('DROP TABLE IF EXISTS test_table');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS test_table (id integer primary key, data text, data_num integer)');
-
-            // demonstrate PRAGMA:
-            db.executeSql("pragma table_info (test_table);", [], function(res) {
-              console.log("PRAGMA res: " + JSON.stringify(res));
-            });
-
-            tx.executeSql("INSERT INTO test_table (data, data_num) VALUES (?,?)", ["test", 100], function(tx, res) {
-              console.log("insertId: " + res.insertId + " -- probably 1");
-              console.log("rowsAffected: " + res.rowsAffected + " -- should be 1");
-
-              db.transaction(function(tx) {
-                tx.executeSql("select count(id) as cnt from test_table;", [], function(tx, res) {
-                  console.log("res.rows.length: " + res.rows.length + " -- should be 1");
-                  console.log("res.rows.item(0).cnt: " + res.rows.item(0).cnt + " -- should be 1");
-                });
-              });
-
-            }, function(e) {
-              console.log("ERROR: " + e.message);
-            });
-          });
-
-        }
-
-        </script>
-        
-        
-        
-        
-        
-        
-        
+ 
         <!-- // the script that handles the shake-motion detection !-->
         <script type="text/javascript" src="js/shake-alert.js"></script>
         <title>FoodShaker</title>
@@ -141,12 +154,13 @@
         <ons-template id="fridge">
             <ons-page>
                 <ons-toolbar>
-                    <div class="center">Fridge</div>
+                    <div class="center">What's in your Fridge?</div>
                 </ons-toolbar>    
-                
+                <center><div id="warning"></div></center>
                 <br>
-                <div class="shake-text">Currently, it's empty</div>
-                <code ng-bind-html="messages"></code>
+                <ul class="list">
+                    <div id="output"></div>
+                </ul>
             </ons-page>
         </ons-template>
         

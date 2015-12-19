@@ -151,3 +151,9 @@ h1 {
   margin-top: 7px;
   width: 100%;
 }
+
+#warning {
+    padding: 10px 0px 0px 10px;
+    margin-top: 10px;
+    color: red;
+}
