@@ -18,12 +18,20 @@ var inventoryURL = "http://pingvinfeszek.hu/cs50.php";
 var localData;
 // path to the local JSON Database
 var localLocation;
+// path to the local Recipe Database
+var recipeLocation;
 // name of the local JSON Database
 var localDataName = "localData.json";
+// name of the local Recipe Database
+var recipeDataName = "recipe.json";
 // array of checked Fridge items
 var checkedIds;
 // dirty fix in order to prevent loss of checked items
 var fridgeOpened = false;
+// what we have in the fridge right now
+var inTheFridge = [];
+// what we can make as of now
+var availableDishes = [];
 
 // register a shake event
 window.addEventListener('shake', shakeEventDidOccur, false);
@@ -34,6 +42,7 @@ function shakeEventDidOccur() {
     console.log("Shake event!");
     
     if (shakeEnabled) {
+        modal.hide();
         var fullPath = getPhoneGapPath() + 'shaker.mp3';
 
         if (device.platform == 'Android') {
@@ -64,6 +73,7 @@ function shakeEventDidOccur() {
         }
 
         modal.show();
+        doTheRecipe();
         setTimeout('modal.hide()', 4000);   
     } else {
         console.log('...but on a Tab where it is disabled!');
@@ -85,4 +95,52 @@ function toggleAudio() {
         console.log('Enabling audio...');
         audioEnabled = true;
     } else { audioEnabled = false; console.log('Disabling audio...');}
+}
+
+function doTheRecipe() {
+    console.log('Loading recipe...');
+    console.log('Fridge: ' + window.inTheFridge);
+    var output = $('#suggestion');
+    var recipePath = getPhoneGapPath() + window.recipeDataName;
+    var suggestion = [];
+    availableDishes = [];
+    console.log(recipePath);
+    jQuery.getJSON(recipePath, function(data) {
+        
+        console.log(data);
+        
+        for (var i = 0; i < data.length; i++)
+        {
+            var canBeMade = true;
+            console.log('Analyzing: ' + data[i]['name']);
+            
+            for (var k = 0; k < data[i]['items'].length; k++)
+            {
+                if ($.inArray(data[i]['items'][k], window.inTheFridge) == -1) {
+                    canBeMade = false;
+                    console.log("Missing item!");
+                }  
+            }
+
+            if (canBeMade) {
+                availableDishes.push(data[i]['name']);
+                console.log('Can be made: ' + data[i]['name']);
+            }
+        }
+        
+        
+        console.log('Finished evaluating!');
+        console.log(window.availableDishes);
+        suggestion = window.availableDishes[Math.floor(Math.random()*window.availableDishes.length)];
+        console.log(suggestion);
+        output.text(suggestion);
+        
+        /*$.each(data, function(j,stuff){
+            var items = stuff.name + '<br/>' + stuff.info + '<br/>';
+            output.append(items);
+        });*/
+
+    });
+    
+
 }

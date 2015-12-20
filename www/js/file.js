@@ -32,6 +32,11 @@ function lookupBackupFileLocation(fileSystem) {
     fileSystem.root.getFile(localDataName, {create: true, exclusive: false}, setLocalLocation, failFile);                        
 }
 
+function lookupRecipeLocation(fileSystem) {
+    console.log('Locating '+recipeDataName);
+    fileSystem.root.getFile(recipeDataName, {create: true, exclusive: false}, setRecipeLocation, failFile);                        
+}
+
 function gotFileEntry(fileEntry) {
     console.log(fileEntry);
     localLocation = fileEntry.nativeURL;
@@ -42,6 +47,12 @@ function gotFileEntry(fileEntry) {
                         console.log(fileEntry);
                         window.localLocation = fileEntry.nativeURL;
                         console.log('Global: '+window.localLocation);
+                    }
+
+                    function setRecipeLocation(fileEntry) {
+                        console.log(fileEntry);
+                        window.recipeLocation = fileEntry.nativeURL;
+                        console.log('Global: '+window.recipeLocation);
                     }
 
                     function gotFileWriter(writer) {

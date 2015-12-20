@@ -31,8 +31,47 @@
         <script >
             ons.ready(function(){
                 
+                                    $.getJSON(window.localLocation, function(data)
+                    {
+                        $.each(data, function(j,stuff){
+                            var items = 
+                                '<li class="list__item list__item--tappable">' +
+                                    '<label class="checkbox checkbox--noborder checkbox--list-item">' +
+                                    '<input type="checkbox" id="' + stuff.id + '">' +
+                                    '<div class="checkbox__checkmark checkbox--noborder checkbox--list-item__checkmark"></div>' +
+                                        stuff.name +
+                                    '</label>' +
+                                '</li>';
+                            output.append(items);
+                        });
+                        console.log('Read from: '+localLocation);
+                        $(":checkbox").click(function () {
+                            var thisVar = $(this);
+                            var id = thisVar.attr('id');
+                            var isChecked = thisVar.is(':checked');
+                            console.log("id" + id + "   " + "Checked " + isChecked);
+                        });
+        
+                        var savedItems = localStorage.getItem("checkedItems");
+                        console.log("Saved: " + JSON.parse(savedItems));
+                        var restored = JSON.parse(savedItems);
+                        window.inTheFridge = [];
+                        var restoredLength = restored.length;
+                        console.log('Length: ' + restoredLength);
+                        
+                        for (var i = 0; i < restoredLength; i++) {
+                            console.log('Setting: ' + restored[i]);
+                            window.inTheFridge.push(restored[i]);
+                            $('#' + restored[i]).attr("checked", true);
+                        }
+                
+                    });   
+                
                 // set the location of the local backup - just in case
                 window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, lookupBackupFileLocation, fail);
+                
+                // set location of the recipe.js local database
+                //window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, lookupRecipeLocation, fail);
                 
                 tabbar.on('prechange', function(event) {
                 
@@ -40,6 +79,17 @@
                         console.log('Firing prechange!');
                         checkCheckedItems();
                         localStorage.setItem("checkedItems", JSON.stringify(window.checkedIds));
+                        var savedItems = localStorage.getItem("checkedItems");
+                        console.log("Prepare for Fridge: " + JSON.parse(savedItems));
+                        var restored = JSON.parse(savedItems);
+                        window.inTheFridge = [];
+                        var restoredLength = restored.length;
+                        console.log('Length: ' + restoredLength);
+                        
+                        for (var i = 0; i < restoredLength; i++) {
+                            console.log('Adding to Fridge: ' + restored[i]);
+                            window.inTheFridge.push(restored[i]);
+                        }
                     }
                     
                 });
@@ -93,23 +143,19 @@
                         var savedItems = localStorage.getItem("checkedItems");
                         console.log("Saved: " + JSON.parse(savedItems));
                         var restored = JSON.parse(savedItems);
+                        window.inTheFridge = [];
                         var restoredLength = restored.length;
                         console.log('Length: ' + restoredLength);
                         
                         for (var i = 0; i < restoredLength; i++) {
                             console.log('Setting: ' + restored[i]);
+                            window.inTheFridge.push(restored[i]);
                             $('#' + restored[i]).attr("checked", true);
                         }
                 
                     });            
                 
-                    //checkCheckedItems();
-
-
-                    
-                    
-                    
-                    
+                    //checkCheckedItems();            
                 }
                 if (event.index === 2) {
                     shakeEnabled = false;
@@ -150,13 +196,8 @@
         </ons-template>
         
         <ons-modal var="modal" ng-controller="modalController">
-            <ons-icon icon="ion-load-c" spin="true"></ons-icon>
             <br>
-            <br> This is your recipe.
-            <br>
-            <br> Well, just a placeholder.
-            <br>
-            <br>Closing in 4 seconds.
+            <div id="suggestion">HERE'S YOUR RECIPE</div>
             <br>
             <br>
             <ons-button ng-click="dismiss()">Close Manually</ons-button>
