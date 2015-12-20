@@ -22,6 +22,8 @@ var localLocation;
 var localDataName = "localData.json";
 // array of checked Fridge items
 var checkedIds;
+// dirty fix in order to prevent loss of checked items
+var fridgeOpened = false;
 
 // register a shake event
 window.addEventListener('shake', shakeEventDidOccur, false);

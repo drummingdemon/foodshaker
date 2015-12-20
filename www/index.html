@@ -34,17 +34,29 @@
                 // set the location of the local backup - just in case
                 window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, lookupBackupFileLocation, fail);
                 
+                tabbar.on('prechange', function(event) {
+                
+                    if (event.index !== 1 && window.fridgeOpened) {
+                        console.log('Firing prechange!');
+                        checkCheckedItems();
+                        localStorage.setItem("checkedItems", JSON.stringify(window.checkedIds));
+                    }
+                    
+                });
+                
                 tabbar.on('postchange', function(event) {
                 
                 if (event.index === 0) {
                     shakeEnabled = true;
                     console.log("shaker opened");
+                    window.fridgeOpened = false;
                 }
                  
                 // Only with the tab we want, we can use the index or the name
                 if (event.index === 1) {
                     shakeEnabled = false;
                     console.log("fridge opened");
+                    window.fridgeOpened = true;
                                         
                     // to initiate the write process
                     //window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
@@ -102,6 +114,7 @@
                 if (event.index === 2) {
                     shakeEnabled = false;
                     console.log("settings opened");
+                    window.fridgeOpened = false;
                 }
 
                 });
@@ -155,7 +168,6 @@
                     <div class="center">What's in your Fridge?</div>
                 </ons-toolbar>    
                 <center><div id="warning"></div></center>
-                <ons-button ng-click="checkCheckedItems()">Save</ons-button>
                 <br>
                 <ul class="list">
                     <div id="output"></div>
