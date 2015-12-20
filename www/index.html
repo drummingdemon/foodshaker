@@ -31,7 +31,7 @@
         <script >
             ons.ready(function(){
                 
-                                    $.getJSON(window.localLocation, function(data)
+                    $.getJSON(window.localLocation, function(data)
                     {
                         $.each(data, function(j,stuff){
                             var items = 
@@ -44,7 +44,7 @@
                                 '</li>';
                             output.append(items);
                         });
-                        console.log('Read from: '+localLocation);
+                        //console.log('Read from: '+localLocation);
                         $(":checkbox").click(function () {
                             var thisVar = $(this);
                             var id = thisVar.attr('id');
@@ -53,14 +53,14 @@
                         });
         
                         var savedItems = localStorage.getItem("checkedItems");
-                        console.log("Saved: " + JSON.parse(savedItems));
+                        //console.log("Saved: " + JSON.parse(savedItems));
                         var restored = JSON.parse(savedItems);
                         window.inTheFridge = [];
                         var restoredLength = restored.length;
-                        console.log('Length: ' + restoredLength);
+                        //console.log('Length: ' + restoredLength);
                         
                         for (var i = 0; i < restoredLength; i++) {
-                            console.log('Setting: ' + restored[i]);
+                        //    console.log('Setting: ' + restored[i]);
                             window.inTheFridge.push(restored[i]);
                             $('#' + restored[i]).attr("checked", true);
                         }
@@ -76,15 +76,15 @@
                 tabbar.on('prechange', function(event) {
                 
                     if (event.index !== 1 && window.fridgeOpened) {
-                        console.log('Firing prechange!');
+                        //console.log('Firing prechange!');
                         checkCheckedItems();
                         localStorage.setItem("checkedItems", JSON.stringify(window.checkedIds));
                         var savedItems = localStorage.getItem("checkedItems");
-                        console.log("Prepare for Fridge: " + JSON.parse(savedItems));
+                        //console.log("Prepare for Fridge: " + JSON.parse(savedItems));
                         var restored = JSON.parse(savedItems);
                         window.inTheFridge = [];
                         var restoredLength = restored.length;
-                        console.log('Length: ' + restoredLength);
+                        //console.log('Length: ' + restoredLength);
                         
                         for (var i = 0; i < restoredLength; i++) {
                             console.log('Adding to Fridge: ' + restored[i]);
@@ -132,7 +132,7 @@
                                 '</li>';
                             output.append(items);
                         });
-                        console.log('Read from: '+localLocation);
+                        //console.log('Read from: '+localLocation);
                         $(":checkbox").click(function () {
                             var thisVar = $(this);
                             var id = thisVar.attr('id');
@@ -141,14 +141,14 @@
                         });
         
                         var savedItems = localStorage.getItem("checkedItems");
-                        console.log("Saved: " + JSON.parse(savedItems));
+                        //console.log("Saved: " + JSON.parse(savedItems));
                         var restored = JSON.parse(savedItems);
                         window.inTheFridge = [];
                         var restoredLength = restored.length;
-                        console.log('Length: ' + restoredLength);
+                        //console.log('Length: ' + restoredLength);
                         
                         for (var i = 0; i < restoredLength; i++) {
-                            console.log('Setting: ' + restored[i]);
+                            //console.log('Setting: ' + restored[i]);
                             window.inTheFridge.push(restored[i]);
                             $('#' + restored[i]).attr("checked", true);
                         }
@@ -161,6 +161,7 @@
                     shakeEnabled = false;
                     console.log("settings opened");
                     window.fridgeOpened = false;
+                    window.availableDishes = [];
                 }
 
                 });
@@ -197,10 +198,10 @@
         
         <ons-modal var="modal" ng-controller="modalController">
             <br>
-            <div id="suggestion">HERE'S YOUR RECIPE</div>
+            <div id="suggestion">Fill up the Fridge!</div>
             <br>
             <br>
-            <ons-button ng-click="dismiss()">Close Manually</ons-button>
+            <ons-button ng-click="dismiss()">OKAY</ons-button>
         </ons-modal>
         
         <ons-template id="fridge">

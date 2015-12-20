@@ -98,17 +98,15 @@ function toggleAudio() {
 }
 
 function doTheRecipe() {
-    console.log('Loading recipe...');
-    console.log('Fridge: ' + window.inTheFridge);
+    console.log('Loading recipes');
+    console.log('We have in the Fridge: ' + window.inTheFridge);
     var output = $('#suggestion');
     var recipePath = getPhoneGapPath() + window.recipeDataName;
     var suggestion = [];
     availableDishes = [];
-    console.log(recipePath);
-    jQuery.getJSON(recipePath, function(data) {
-        
-        console.log(data);
-        
+    output.text("Fill up the Fridge!");
+    //console.log(recipePath);
+    jQuery.getJSON(recipePath, function(data) {    
         for (var i = 0; i < data.length; i++)
         {
             var canBeMade = true;
@@ -118,29 +116,25 @@ function doTheRecipe() {
             {
                 if ($.inArray(data[i]['items'][k], window.inTheFridge) == -1) {
                     canBeMade = false;
-                    console.log("Missing item!");
+                    //console.log("Missing item!");
                 }  
             }
 
             if (canBeMade) {
-                availableDishes.push(data[i]['name']);
-                console.log('Can be made: ' + data[i]['name']);
+                var mealTime = parseInt(data[i]['time']);
+                var cookTime = parseInt(window.cookingTime);
+                if (mealTime < cookTime)
+                {
+                    availableDishes.push(data[i]['name']);
+                    console.log('Can be made: ' + data[i]['name']);
+                }
             }
         }
         
-        
         console.log('Finished evaluating!');
-        console.log(window.availableDishes);
+        //console.log(window.availableDishes);
         suggestion = window.availableDishes[Math.floor(Math.random()*window.availableDishes.length)];
-        console.log(suggestion);
+        //console.log(suggestion);
         output.text(suggestion);
-        
-        /*$.each(data, function(j,stuff){
-            var items = stuff.name + '<br/>' + stuff.info + '<br/>';
-            output.append(items);
-        });*/
-
     });
-    
-
 }

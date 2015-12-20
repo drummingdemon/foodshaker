@@ -2,11 +2,13 @@
     {
         "name":"Carrot Dish",
         "info":"Purely for testing!",
-        "items":"1"
+        "items":["1", "2"],
+        "time":"10"
     },
     {
-        "name":"Egg and Carrot",
+        "name":"Omlette",
         "info":"Truly remarkable",
-        "items": ["7" , "1"]
+        "items": ["7" , "3"],
+        "time":"15"
     }
 ]
