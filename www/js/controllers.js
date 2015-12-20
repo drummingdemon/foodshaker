@@ -20,10 +20,10 @@ ons.bootstrap()
     
     $scope.check = function(){
         if ($scope.audToggle) {
-            console.log("ENABLED!");
+            console.log("Shake Sound activated");
             audioEnabled = true;
         } else {
-            console.log("DISABLED!");
+            console.log("Shake Sound deactivated");
             audioEnabled = false;
         }
     }
@@ -33,7 +33,7 @@ ons.bootstrap()
             console.log("Online Mode activated");
             onlineMode = true;
         } else {
-            console.log("Global Shake deactivated");
+            console.log("Online Mode deactivated");
             onlineMode = false;
         }
     }

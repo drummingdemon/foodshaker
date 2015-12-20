@@ -10,6 +10,10 @@ var audioEnabled = true;
 var shakeEnabled = true;
 var onlineMode = true;
 var cookingTime = 30;
+var inventoryURL = "http://pingvinfeszek.hu/cs50.php";
+var localData; //= '[{ "id": "1", "name": "Test From Writer" }]';
+var localLocation;
+var localDataName = "localData.json";
 
 // register a shake event
 window.addEventListener('shake', shakeEventDidOccur, false);
