@@ -6,6 +6,18 @@ ons.bootstrap()
     }
 })
 
+.controller('FridgeController', function($scope) {
+    $scope.checkCheckedItems = function() {
+        checkCheckedItems();
+        console.log(window.checkedIds);
+        localStorage.setItem("checkedItems", JSON.stringify(window.checkedIds));
+        console.log('saved checked items to Local Storage');
+        console.log(JSON.parse(localStorage.getItem("checkedItems")));
+    }
+    //console.log(window.checkedIds);
+                      
+})
+
 .controller('MyController', function($scope, $timeout) {
     $scope.items = [{}, {}, {}, {}];
     $scope.timeToCook = cookingTime;
@@ -13,11 +25,7 @@ ons.bootstrap()
     if (audioEnabled) {
         $scope.audToggle = true;
     }
-    
-    if (onlineMode) {
-        $scope.onlineToggle = true;
-    }
-    
+        
     $scope.check = function(){
         if ($scope.audToggle) {
             console.log("Shake Sound activated");
@@ -25,16 +33,6 @@ ons.bootstrap()
         } else {
             console.log("Shake Sound deactivated");
             audioEnabled = false;
-        }
-    }
-    
-    $scope.toggleOnline = function() {
-        if ($scope.onlineToggle) {
-            console.log("Online Mode activated");
-            onlineMode = true;
-        } else {
-            console.log("Online Mode deactivated");
-            onlineMode = false;
         }
     }
     

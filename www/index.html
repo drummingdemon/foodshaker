@@ -23,10 +23,11 @@
         <script type="text/javascript" src="js/shake.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
         <script type="text/javascript" src="js/SQLitePlugin.js"></script>
+        <script type="text/javascript" src="js/file.js"></script>
         <script src="js/controllers.js"></script>
         <!-- // the script that handles the shake-motion detection !-->
         <script type="text/javascript" src="js/shake-alert.js"></script>
-        <script type="text/javascript" src="js/file.js"></script>
+       
         <script >
             ons.ready(function(){
                 
@@ -44,87 +45,58 @@
                 if (event.index === 1) {
                     shakeEnabled = false;
                     console.log("fridge opened");
-                    
-                    if (!jQuery) { alert("jQuery is not loaded"); }
-                    else { console.log("jQuery found!"); }
-                    
+                                        
                     // to initiate the write process
                     //window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
                     
                     var output = $('#output');
                     var warning = $('#warning');
 
-                    if (onlineMode) {
+                    //console.log('Offline mode start');
+                    //warning.text('Online mode disabled in Settings');  
+                    var readData;
+                    //fileSystem.root.getFile(localDataName, {create: true, exclusive: false}, setLocalLocation, failFile);
+                    //console.log('Read from: '+window.localLocation);
+                    $.getJSON(window.localLocation, function(data)
+                    {
+                        $.each(data, function(j,stuff){
+                            var items = 
+                                '<li class="list__item list__item--tappable">' +
+                                    '<label class="checkbox checkbox--noborder checkbox--list-item">' +
+                                    '<input type="checkbox" id="' + stuff.id + '">' +
+                                    '<div class="checkbox__checkmark checkbox--noborder checkbox--list-item__checkmark"></div>' +
+                                        stuff.name +
+                                    '</label>' +
+                                '</li>';
+                            output.append(items);
+                        });
+                        console.log('Read from: '+localLocation);
+                        $(":checkbox").click(function () {
+                            var thisVar = $(this);
+                            var id = thisVar.attr('id');
+                            var isChecked = thisVar.is(':checked');
+                            console.log("id" + id + "   " + "Checked " + isChecked);
+                        });
+        
+                        var savedItems = localStorage.getItem("checkedItems");
+                        console.log("Saved: " + JSON.parse(savedItems));
+                        var restored = JSON.parse(savedItems);
+                        var restoredLength = restored.length;
+                        console.log('Length: ' + restoredLength);
+                        
+                        for (var i = 0; i < restoredLength; i++) {
+                            console.log('Setting: ' + restored[i]);
+                            $('#' + restored[i]).attr("checked", true);
+                        }
+                
+                    });            
+                
+                    //checkCheckedItems();
 
-                        $.ajax({
-                            url: inventoryURL,
-                            dataType: 'jsonp',
-                            jsonp: 'jsoncallback',
-                            timeout: 2000,
-                            success: function(data, status){
-                             $.each(data, function(i,item){
-                                    var response = 
-                                    '<li class="list__item list__item--tappable">' +
-                                      '<label class="checkbox checkbox--noborder checkbox--list-item">' +
-                                        '<input type="checkbox">' +
-                                        '<div class="checkbox__checkmark checkbox--noborder checkbox--list-item__checkmark"></div>' +
-                                          item.name +
-                                      '</label>' +
-                                    '</li>';
-                                    output.append(response);
-                              });
-                                console.log('Writing backup to localData.json');
-                                console.log(JSON.stringify(data));
-                                writeFile(JSON.stringify(data));
-                                //window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
-                            },
-                            error: function(){
-                                warning.text('No Internet! Using local data...');
-                                //var localJSONPath = getPhoneGapPath();
-                                var readData;
-                                window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, lookupBackupFileLocation, fail);
-                                $.getJSON(localLocation, function(data)
-                                {
-                                    $.each(data, function(j,stuff){
-                                        var items = 
-                                            '<li class="list__item list__item--tappable">' +
-                                                '<label class="checkbox checkbox--noborder checkbox--list-item">' +
-                                                '<input type="checkbox">' +
-                                                '<div class="checkbox__checkmark checkbox--noborder checkbox--list-item__checkmark"></div>' +
-                                                    stuff.name +
-                                                '</label>' +
-                                            '</li>';
-                                        output.append(items);
-                                    });
-                                    console.log(localJSONPath);
-                                });
-                            }
-                        });
-                        // Delete this listener so it's only triggered the first time
-                        //myTabbar.off('postchange');
-                    }
-                    else {
-                        console.log('Offline mode start');
-                        warning.text('Online mode disabled in Settings');  
-                        var readData;
-                        //fileSystem.root.getFile(localDataName, {create: true, exclusive: false}, setLocalLocation, failFile);
-                        console.log('Read from: '+window.localLocation);
-                        $.getJSON(window.localLocation, function(data)
-                        {
-                            $.each(data, function(j,stuff){
-                                var items = 
-                                    '<li class="list__item list__item--tappable">' +
-                                        '<label class="checkbox checkbox--noborder checkbox--list-item">' +
-                                        '<input type="checkbox">' +
-                                        '<div class="checkbox__checkmark checkbox--noborder checkbox--list-item__checkmark"></div>' +
-                                            stuff.name +
-                                        '</label>' +
-                                    '</li>';
-                                output.append(items);
-                            });
-                            console.log('Read from: '+localLocation);
-                        });
-                    }
+
+                    
+                    
+                    
                     
                 }
                 if (event.index === 2) {
@@ -178,11 +150,12 @@
         </ons-modal>
         
         <ons-template id="fridge">
-            <ons-page>
+            <ons-page ng-controller="FridgeController">
                 <ons-toolbar>
                     <div class="center">What's in your Fridge?</div>
                 </ons-toolbar>    
                 <center><div id="warning"></div></center>
+                <ons-button ng-click="checkCheckedItems()">Save</ons-button>
                 <br>
                 <ul class="list">
                     <div id="output"></div>
@@ -204,13 +177,6 @@
                     </ons-list-item>
                 </ons-list>
                 <br/>
-                <div class="settings-header">General</div>
-                <ons-list modifier="inset" class="settings-list">
-                    <ons-list-item>
-                        Online Database
-                      <ons-switch modifier="list-item" var='onlineSwitch' ng-model='onlineToggle' ng-change='toggleOnline()'></ons-switch>
-                    </ons-list-item>
-                </ons-list>
                 <br/>
                 <div class="settings-header">Time Available for Cooking</div>
                 <ons-list class="range-list">

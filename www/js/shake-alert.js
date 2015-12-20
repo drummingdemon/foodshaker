@@ -6,14 +6,22 @@ var myShakeEvent = new Shake({
 // start listening to device motion
 myShakeEvent.start();
 
+// initial setting for Shake Sound
 var audioEnabled = true;
+// initial setting for Shake Prompt
 var shakeEnabled = true;
-var onlineMode = true;
+// initial cooking time displayed in Settings
 var cookingTime = 30;
+// URL of the website that hosts the SQL<->JSON service
 var inventoryURL = "http://pingvinfeszek.hu/cs50.php";
-var localData; //= '[{ "id": "1", "name": "Test From Writer" }]';
+// variable that holds the contents of the local JSON Database
+var localData;
+// path to the local JSON Database
 var localLocation;
+// name of the local JSON Database
 var localDataName = "localData.json";
+// array of checked Fridge items
+var checkedIds;
 
 // register a shake event
 window.addEventListener('shake', shakeEventDidOccur, false);

@@ -1,3 +1,26 @@
+function checkCheckedItems() {
+    console.log('Checking checked items');
+    window.checkedIds = $(":checkbox:checked").map(function() {
+        return this.id;
+    }).get();
+    //console.log(window.checkedIds);
+}
+
+// prototypes for data storage
+Storage.prototype.setArray = function(key, obj) {
+    return this.setItem(key, JSON.stringify(obj))
+}
+
+// prototypes for data retrieval
+Storage.prototype.getArray = function(key) {
+    return JSON.parse(this.getItem(key))
+}
+
+function setListChecked() {
+    console.log('Setting checked items checked...');
+    $("#1").prop("checked", true);
+}
+
 function onFileSystemSuccess(fileSystem) {
     console.log(fileSystem.name);
     console.log(fileSystem.root.name);
