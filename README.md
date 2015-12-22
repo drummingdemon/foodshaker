@@ -3,7 +3,7 @@
 
 
 ## What is this?
-FoodShaker is a cross-platform mobile app written in HTML/JavaScript using PhoneGap. It stores the ingredients you have in your fridge and by shaking your deviceit will throw a random suggestion on what to cook based on what you have at home, taking into consideration the amount of time you devoted to preparing a dish.
+FoodShaker is a cross-platform mobile app written in HTML/JavaScript using PhoneGap. It stores the ingredients you have in your fridge and by shaking your device it will throw a random suggestion on what to cook based on what you have at home, taking into consideration the amount of time you devoted to preparing a dish.
 
 ## What for?
 It's my Final Project for Harvard University's CS50 Online Class in 2015. For the showcase video, see https://www.youtube.com/watch?v=TkRez6t34V8
