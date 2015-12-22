@@ -1,6 +1,6 @@
 #FoodShaker
-### A Cross-Platform Random Food Generator
-### *My Final Project for Harvard University's CS50 Curse*
+#### A Cross-Platform Random Food Generator
+
 
 ## What is this?
 FoodShaker is a cross-platform mobile app written in HTML/JavaScript using PhoneGap. It stores the ingredients you have in your fridge and by shaking your deviceit will throw a random suggestion on what to cook based on what you have at home, taking into consideration the amount of time you devoted to preparing a dish.
