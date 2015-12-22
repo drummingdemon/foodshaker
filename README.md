@@ -15,6 +15,6 @@ It's my Final Project for Harvard University's CS50 Online Class in 2015. For th
 * [Brackets](http://brackets.io)
  
 ## Thoughts?
-This repository is for educational purposes only and frankly, it holds some leftover ideas from earlier stages of development meaning that it isn't cleaned up or it isn't in any way ready for code review. The reason it exists is the fact that I wanted to try out git in cli and so that I could continue to work on the project from various places.
+This repository is for educational purposes only and frankly, it holds some leftover ideas from earlier stages of development meaning that it isn't cleaned up or it isn't in any way ready for code review. The reason it exists is the fact that I wanted to try out git in cli so I could continue to work on the project from various places.
 
 It isn't pretty nor it is polished, but it holds the result of a learning process that involved constant trial and error. I do really hope other people will find something interesting for themselves in it or perhaps someone will find an answer to what he/she has been looking for. This is my contribution back to the community.
